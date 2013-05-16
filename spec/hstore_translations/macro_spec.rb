@@ -45,11 +45,11 @@ end
 
 describe HstoreTranslations::Macro, 'generated accessors' do
   before { Post.translates :title }
+  let(:post) { Post.new }
 
   describe '#title=' do
-    let(:post) { Post.new }
     before do
-      I18n.locale = :en
+      configure_i18n locale: :en
       post.title = 'hello'
     end
 
@@ -66,8 +66,8 @@ describe HstoreTranslations::Macro, 'generated accessors' do
     let(:post) { Post.new(title_en: 'hello', title_ru: 'привет', title_es: 'hola') }
 
     before do
-      I18n.locale = :en
-      I18n.default_locale = :ru
+      configure_i18n locale: :en,
+                     default_locale: :ru
     end
 
     it 'is a title in current locale' do
@@ -98,6 +98,20 @@ describe HstoreTranslations::Macro, 'generated accessors' do
           post.title.should eq 'привет'
         end
       end
+    end
+  end
+
+  describe '#title_en' do
+    before do
+      configure_i18n locale: :en,
+                     default_locale: :ru,
+                     available_locales: [:en, :ru]
+      Post.translates :title
+    end
+
+    it 'does not attempt to get value with fallbacks' do
+      post.title_ru = 'hello'
+      post.title_en.should be_nil
     end
   end
 end

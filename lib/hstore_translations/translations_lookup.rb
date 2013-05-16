@@ -4,21 +4,24 @@ module HstoreTranslations
 
     def initialize(model, attribute, locale = nil)
       @model, @attribute, @locale = model, attribute, locale
-      @locale = locale || HstoreTranslations.locale
+      @locale = locale
     end
 
     def value
-      fallbacks.each do |locale|
-        value = try_locale(locale)
-        return value if value.present?
+      if @locale
+        try_locale(@locale)
+      else
+        fallbacks.inject(nil) do |_, locale|
+          value = try_locale(locale)
+          return value if value.present?
+        end
       end
-      nil
     end
 
     private
 
     def fallbacks
-      HstoreTranslations.fallbacks(@locale)
+      HstoreTranslations.fallbacks(@locale || HstoreTranslations.locale)
     end
 
     def try_locale(locale)
