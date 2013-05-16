@@ -2,5 +2,5 @@ en:
   activerecord:
     attributes:
       post:
-        title: 'Title'
+        title: 'Customized title'
         title_ru: 'Russian title'

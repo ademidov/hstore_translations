@@ -91,10 +91,10 @@ describe HstoreTranslations::AccessMethods do
     end
 
     it 'uses default behaviour' do
-      han(:title).should eq 'Title'
+      han(:title).should eq 'Customized title'
     end
     it 'uses default behaviour for locale-attributes' do
-      han(:title_es).should eq 'Title (es)'
+      han(:title_es).should eq 'Customized title (es)'
     end
     it 'appends language suffix when no translation for attribute' do
       han(:title_ru).should eq 'Russian title'
