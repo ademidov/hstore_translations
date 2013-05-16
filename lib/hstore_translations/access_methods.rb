@@ -26,6 +26,21 @@ module HstoreTranslations
         end
         order("#{table_name}.#{name}_translations->'#{locale}' #{mode}")
       end
+
+      def human_attribute_name(name, options = {})
+        default = super(name, options.merge(default: ''))
+        attribute, locale = name.to_s.match(/\A(\w+)_([a-z]{2})\z/).try(:captures)
+
+        if default.blank? && attribute && translates?(attribute)
+          "#{super(attribute, options)} (#{locale})"
+        else
+          super
+        end
+      end
+
+      def translates?(name)
+        locale_attributes.has_key?(name.to_sym)
+      end
     end
   end
 end

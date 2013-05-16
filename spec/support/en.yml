@@ -1,0 +1,6 @@
+en:
+  activerecord:
+    attributes:
+      post:
+        title: 'Title'
+        title_ru: 'Russian title'

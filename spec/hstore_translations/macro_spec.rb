@@ -37,9 +37,9 @@ describe HstoreTranslations::Macro, '.translates' do
   end
   it 'adds attributes to list' do
     Post.translates :title
-    Post.translatable_attributes.should eq [:title]
+    Post.locale_attributes.keys.should eq [:title]
     Post.translates :body
-    Post.translatable_attributes.should eq [:title, :body]
+    Post.locale_attributes.keys.should eq [:title, :body]
   end
 end
 

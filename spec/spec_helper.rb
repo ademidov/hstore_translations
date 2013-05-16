@@ -4,6 +4,8 @@ require 'i18n/backend/fallbacks'
 
 db_config = YAML.load_file(File.expand_path('../support/database.yml', __FILE__))['test']
 ActiveRecord::Base.establish_connection(db_config)
+I18n.load_path << 'spec/support/en.yml'
+
 require 'support/schema'
 require 'support/models'
 

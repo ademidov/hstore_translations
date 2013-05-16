@@ -81,5 +81,32 @@ describe HstoreTranslations::AccessMethods do
       ordered(:title, :en).should eq [post_3, post_2, post_1]
     end
   end
+
+  describe '.human_attribute_name' do
+    before { configure_i18n locale: :en }
+    before { Post.translates :title }
+
+    def han(*a)
+      Post.human_attribute_name(*a)
+    end
+
+    it 'uses default behaviour' do
+      han(:title).should eq 'Title'
+    end
+    it 'uses default behaviour for locale-attributes' do
+      han(:title_es).should eq 'Title (es)'
+    end
+    it 'appends language suffix when no translation for attribute' do
+      han(:title_ru).should eq 'Russian title'
+    end
+  end
+
+  describe '.translates?' do
+    it 'is true when translates' do
+      Post.translates?(:body).should be_false
+      Post.translates :body
+      Post.translates?(:body).should be_true
+    end
+  end
 end
 

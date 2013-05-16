@@ -3,13 +3,16 @@ module HstoreTranslations
 
     def translates(*attributes)
       setup_hstore_translations
-      self.translatable_attributes |= attributes.map(&:to_sym)
 
-      attributes.each do |attribute|
+      attributes.map(&:to_sym).each do |attribute|
         define_translations_reader(attribute)
         define_translations_writer(attribute)
 
+        self.locale_attributes[attribute] ||= []
+
         HstoreTranslations.available_locales.each do |locale|
+          self.locale_attributes[attribute] << :"#{attribute}_#{locale}"
+
           define_translations_reader(attribute, locale)
           define_translations_writer(attribute, locale)
         end
@@ -19,13 +22,12 @@ module HstoreTranslations
     private
 
     def setup_hstore_translations
-      return if respond_to?(:translatable_attributes)
+      return if respond_to?(:locale_attributes)
 
-      class_attribute :translatable_attributes
-      class_attribute :translations_methods
-
-      self.translatable_attributes = []
+      class_attribute :translations_methods, :locale_attributes
+      self.locale_attributes = {}
       self.translations_methods = Module.new
+
       translations_methods.define_singleton_method :inspect do
         "HstoreTranslations::TranslationsMethods"
       end
