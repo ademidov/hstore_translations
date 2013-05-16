@@ -108,5 +108,17 @@ describe HstoreTranslations::AccessMethods do
       Post.translates?(:body).should be_true
     end
   end
+
+  describe '.locale_attibutes_for' do
+    before { Post.translates :title, :body }
+
+    it 'works with single attribute' do
+      Post.locale_attributes_for(:title).should eq [:title_ru, :title_en, :title_es]
+    end
+    it 'works with multiple attributes' do
+      attrs = Post.locale_attributes_for(:title, :body)
+      attrs.should eq [:title_ru, :title_en, :title_es, :body_ru, :body_en, :body_es]
+    end
+  end
 end
 

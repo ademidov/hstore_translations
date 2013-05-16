@@ -11,7 +11,7 @@ module HstoreTranslations
         self.locale_attributes[attribute] ||= []
 
         HstoreTranslations.available_locales.each do |locale|
-          self.locale_attributes[attribute] << :"#{attribute}_#{locale}"
+          self.locale_attributes[attribute] |= [:"#{attribute}_#{locale}"]
 
           define_translations_reader(attribute, locale)
           define_translations_writer(attribute, locale)

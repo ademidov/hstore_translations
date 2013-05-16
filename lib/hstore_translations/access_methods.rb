@@ -41,6 +41,10 @@ module HstoreTranslations
       def translates?(name)
         locale_attributes.has_key?(name.to_sym)
       end
+
+      def locale_attributes_for(*attributes)
+        locale_attributes.values_at(*attributes).flatten
+      end
     end
   end
 end
