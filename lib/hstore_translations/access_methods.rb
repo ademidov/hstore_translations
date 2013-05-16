@@ -11,9 +11,10 @@ module HstoreTranslations
     end
 
     module ClassMethods
+      # TODO: escaping
       def with_translated(name, value, locales = HstoreTranslations.fallbacks)
         hstore_query_parts = Array(locales).map do |locale|
-          "#{table_name}.#{name}_translations @> '#{locale}=>#{value}'"
+          "#{table_name}.#{name}_translations @> '#{locale}=>\"#{value}\"'"
         end
         where(hstore_query_parts.join(' OR '))
       end

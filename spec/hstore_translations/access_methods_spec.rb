@@ -32,9 +32,15 @@ describe HstoreTranslations::AccessMethods do
     let!(:post_1) { Post.create!(title_ru: 'hello') }
     let!(:post_2) { Post.create!(title_en: 'hello') }
     let!(:post_3) { Post.create!(title_es: 'hello') }
-    let!(:post_4) { Post.create!(title_ru: 'привет') }
+    let!(:post_4) { Post.create!(title_ru: 'привет на русском') }
 
     subject { Post.with_translated(:title, 'hello') }
+
+    it 'works with multiple words' do
+      posts = Post.with_translated(:title, 'привет на русском')
+      posts.should include(post_4)
+      posts.should_not include(post_1, post_2, post_3)
+    end
 
     context 'without locales given' do
       it 'includes records with translated attribute from current locale' do
